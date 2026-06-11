@@ -116,7 +116,6 @@ export default function PublicSite() {
           </div>
           <div className="hero-shade" />
           <div className="hero-copy">
-            <span className="kicker">Pune · Weddings · Portraits · Films</span>
             <h1>{s.heroHeading}<em>{s.heroAccent}</em></h1>
             <p>{s.heroSubtitle}</p>
             <div className="hero-actions">
@@ -130,14 +129,6 @@ export default function PublicSite() {
           <div>{["Wedding Photography", "Cinematic Films", "Outdoor Stories", "Studio Portraits", "Pre-Wedding", "Events"].concat(["Wedding Photography", "Cinematic Films", "Outdoor Stories", "Studio Portraits", "Pre-Wedding", "Events"]).map((item, index) => <span key={`${item}-${index}`}>{item}</span>)}</div>
         </div>
 
-        <section className="stats">
-          {[
-            [s.stats?.weddings, "Stories captured", "+"],
-            [s.stats?.years, "Years creating", "+"],
-            [s.stats?.satisfaction, "Happy clients", "%"],
-            [s.stats?.awards, "Awards & features", "+"]
-          ].map(([value, label, suffix]) => <div key={label}><strong>{value || 0}{suffix}</strong><span>{label}</span></div>)}
-        </section>
 
         <section id="about" className="section story">
           <div className="story-images">
