@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronLeft, ChevronRight, Film, Instagram, Menu, Play, X } from "lucide-react";
 import { api, assetUrl } from "../api";
-import heroDefaultImage from "../assets/hero-lens.png";
+import heroLensImage from "../assets/camera.png";
 
 import SectionHeading from "../components/SectionHeading";
 
@@ -34,7 +34,7 @@ export default function PublicSite() {
   const categories = useMemo(() => ["All", ...new Set(content.gallery.map((item) => item.category))], [content.gallery]);
   const gallery = filter === "All" ? content.gallery : content.gallery.filter((item) => item.category === filter);
   const s = content.settings;
-  const heroImage = assetUrl(s.heroImages?.[0] || heroDefaultImage) || heroDefaultImage;
+  const heroImage = assetUrl(s.heroImages?.[0] || heroLensImage) || heroLensImage;
 
   async function submitInquiry(event) {
     event.preventDefault();
