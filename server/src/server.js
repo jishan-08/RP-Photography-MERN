@@ -44,7 +44,20 @@ async function getContent() {
     content = await SiteContent.create({ key: "main", ...defaultContent });
     content = content.toObject();
   }
-  return content;
+  return {
+    ...defaultContent,
+    ...content,
+    settings: {
+      ...defaultContent.settings,
+      ...(content.settings || {})
+    },
+    services: content.services || defaultContent.services,
+    gallery: content.gallery || defaultContent.gallery,
+    pricing: content.pricing || defaultContent.pricing,
+    testimonials: content.testimonials || defaultContent.testimonials,
+    events: content.events || defaultContent.events,
+    faqs: content.faqs || defaultContent.faqs
+  };
 }
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));

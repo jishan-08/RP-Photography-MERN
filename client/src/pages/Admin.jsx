@@ -59,10 +59,9 @@ function Login({ onLogin }) {
     <form onSubmit={submit}>
       <div className="admin-logo">RP</div><h1>Studio Admin</h1><p>Manage the complete website from one place.</p>
       {error && <div className="admin-error">{error}</div>}
-      <label>Username<input name="username" defaultValue="admin" autoComplete="username" /></label>
-      <label>Password<input name="password" type="password" defaultValue="admin123" autoComplete="current-password" /></label>
+      <label>Username<input name="username" placeholder="Username" autoComplete="username" required /></label>
+      <label>Password<input name="password" type="password" placeholder="Password" autoComplete="current-password" required /></label>
       <button disabled={busy}>{busy ? "Signing in..." : "Sign in"}</button>
-      <small>Default: admin / admin123</small>
     </form>
   </div>;
 }
@@ -110,6 +109,12 @@ export default function Admin() {
   }
   async function saveSettings(value, imageFile) {
     try {
+      if (!Array.isArray(value.heroImages) || value.heroImages.length === 0) {
+        const existing = content?.settings?.heroImages;
+        if (Array.isArray(existing) && existing.length > 0) {
+          value.heroImages = existing;
+        }
+      }
       if (imageFile) {
         const body = new FormData();
         body.append("images", imageFile);
@@ -168,7 +173,7 @@ export default function Admin() {
       <div className="admin-user"><div>{user.name?.[0] || "A"}</div><span><strong>{user.name}</strong><small>{user.role}</small></span><button title="Log out" onClick={logout}><LogOut size={17} /></button></div>
     </aside>
     <div className="admin-main">
-      <header><button className="admin-menu" onClick={() => setMobileNav(true)}><Menu /></button><div><small>RP Photography</small><h1>{currentLabel}</h1></div><a href="/" target="_blank">View website <ChevronLeft size={14} /></a></header>
+      <header><button className="admin-menu" onClick={() => setMobileNav(true)}><Menu /></button><div><small>RP Photography</small><h1>{currentLabel}</h1></div><a href="/">View website <ChevronLeft size={14} /></a></header>
       <div className="admin-content">
         {page === "dashboard" && <Dashboard data={dashboard} onNavigate={setPage} />}
         {page === "inquiries" && <Inquiries data={inquiries} onStatus={updateInquiry} onDelete={removeInquiry} onBooking={makeBooking} />}

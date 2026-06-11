@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronLeft, ChevronRight, Film, Instagram, Menu, Play, X } from "lucide-react";
 import { api, assetUrl } from "../api";
-import heroLensImage from "../assets/camera.png";
+import heroDefaultImage from "../assets/hero-lens.png";
 
 import SectionHeading from "../components/SectionHeading";
 
@@ -34,6 +34,7 @@ export default function PublicSite() {
   const categories = useMemo(() => ["All", ...new Set(content.gallery.map((item) => item.category))], [content.gallery]);
   const gallery = filter === "All" ? content.gallery : content.gallery.filter((item) => item.category === filter);
   const s = content.settings;
+  const heroImage = assetUrl(s.heroImages?.[0] || heroDefaultImage) || heroDefaultImage;
 
   async function submitInquiry(event) {
     event.preventDefault();
@@ -112,7 +113,7 @@ export default function PublicSite() {
       <main>
         <section id="hero" className="hero">
           <div className="hero-media">
-            <img className="active" src={assetUrl(s.heroImages?.[0] || heroLensImage)} alt="Hero background" />
+            <img className="active" src={heroImage} alt="Hero background" onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = heroLensImage; }} />
           </div>
           <div className="hero-shade" />
           <div className="hero-copy">
@@ -204,8 +205,8 @@ export default function PublicSite() {
           <p>Enter your admin username and password to continue.</p>
           {loginError && <div className="admin-error">{loginError}</div>}
           <form onSubmit={handleLogin}>
-            <label>Username<input name="username" defaultValue="admin" autoComplete="username" /></label>
-            <label>Password<input name="password" type="password" defaultValue="admin123" autoComplete="current-password" /></label>
+            <label>Username<input name="username" placeholder="Username" autoComplete="username" required /></label>
+            <label>Password<input name="password" type="password" placeholder="Password" autoComplete="current-password" required /></label>
             <button disabled={loginBusy}>{loginBusy ? "Signing in..." : "Sign in"}</button>
           </form>
         </div>
