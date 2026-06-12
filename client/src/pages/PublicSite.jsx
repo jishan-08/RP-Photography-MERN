@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronLeft, ChevronRight, Film, Instagram, Menu, Play, X } from "lucide-react";
 import { api, assetUrl } from "../api";
@@ -21,7 +21,8 @@ export default function PublicSite() {
   const [loginError, setLoginError] = useState("");
   const [loginBusy, setLoginBusy] = useState(false);
   const [message, setMessage] = useState("");
-  const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
+  const heroRef = useRef(null);
+  const heroFrame = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,11 +32,11 @@ export default function PublicSite() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => () => cancelAnimationFrame(heroFrame.current), []);
+
   const categories = useMemo(() => ["All", ...new Set(content.gallery.map((item) => item.category))], [content.gallery]);
   const gallery = filter === "All" ? content.gallery : content.gallery.filter((item) => item.category === filter);
   const s = content.settings;
-  const heroImage = assetUrl(s.heroImages?.[0] || heroLensImage) || heroLensImage;
-
   async function submitInquiry(event) {
     event.preventDefault();
     const formElement = event.currentTarget;
@@ -59,13 +60,32 @@ export default function PublicSite() {
 
   function handleHeroMove(event) {
     const rect = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 24;
-    const y = ((event.clientY - rect.top) / rect.height - 0.5) * -16;
-    setHeroTilt({ x, y });
+    const pointerX = event.clientX - rect.left;
+    const pointerY = event.clientY - rect.top;
+    const normalizedX = pointerX / rect.width - 0.5;
+    const normalizedY = pointerY / rect.height - 0.5;
+
+    cancelAnimationFrame(heroFrame.current);
+    heroFrame.current = requestAnimationFrame(() => {
+      const hero = heroRef.current;
+      if (!hero) return;
+      hero.style.setProperty("--hero-rotate-x", `${normalizedY * -10}deg`);
+      hero.style.setProperty("--hero-rotate-y", `${normalizedX * 14}deg`);
+      hero.style.setProperty("--hero-shift-x", `${normalizedX * 24}px`);
+      hero.style.setProperty("--hero-shift-y", `${normalizedY * 18}px`);
+      hero.style.setProperty("--cursor-x", `${pointerX}px`);
+      hero.style.setProperty("--cursor-y", `${pointerY}px`);
+    });
   }
 
   function resetHeroTilt() {
-    setHeroTilt({ x: 0, y: 0 });
+    cancelAnimationFrame(heroFrame.current);
+    const hero = heroRef.current;
+    if (!hero) return;
+    hero.style.setProperty("--hero-rotate-x", "0deg");
+    hero.style.setProperty("--hero-rotate-y", "0deg");
+    hero.style.setProperty("--hero-shift-x", "0px");
+    hero.style.setProperty("--hero-shift-y", "0px");
   }
 
   async function handleLogin(event) {
@@ -111,11 +131,25 @@ export default function PublicSite() {
       </nav>
 
       <main>
-        <section id="hero" className="hero">
-          <div className="hero-media">
-            <img className="active" src={heroImage} alt="Hero background" onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = heroLensImage; }} />
+        <section
+          id="hero"
+          className="hero"
+          ref={heroRef}
+          onPointerMove={handleHeroMove}
+          onPointerEnter={(event) => event.currentTarget.classList.add("is-interacting")}
+          onPointerLeave={(event) => {
+            event.currentTarget.classList.remove("is-interacting");
+            resetHeroTilt();
+          }}
+        >
+          <div className="hero-media" aria-hidden="true">
+            <div className="hero-camera-stage">
+              <img className="hero-camera" src={heroLensImage} alt="" />
+              <div className="hero-camera-glow" />
+            </div>
           </div>
           <div className="hero-shade" />
+          <div className="hero-cursor" aria-hidden="true"><span /></div>
           <div className="hero-copy">
             <h1>{s.heroHeading}<em>{s.heroAccent}</em></h1>
             <p>{s.heroSubtitle}</p>

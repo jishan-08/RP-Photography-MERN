@@ -4,21 +4,28 @@ import mongoose from "mongoose";
 import { SiteContent, User } from "./models.js";
 import { defaultContent } from "./defaultContent.js";
 
-const uri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/rp-photography";
+const uri = process.env.MONGO_URI;
+if (!uri) throw new Error("Missing required environment variable: MONGO_URI");
+
+const adminUsername = process.env.ADMIN_USERNAME?.trim() || "admin";
+const adminPassword = process.env.ADMIN_PASSWORD;
+if (!adminPassword || adminPassword.length < 8) {
+  throw new Error("ADMIN_PASSWORD must contain at least 8 characters");
+}
+
 await mongoose.connect(uri);
 
-await SiteContent.findOneAndUpdate(
-  { key: "main" },
-  { key: "main", ...defaultContent },
-  { upsert: true, new: true, setDefaultsOnInsert: true }
-);
+const existingContent = await SiteContent.exists({ key: "main" });
+if (!existingContent) {
+  await SiteContent.create({ key: "main", ...defaultContent });
+}
 
-const password = await bcrypt.hash("admin123", 12);
+const password = await bcrypt.hash(adminPassword, 12);
 await User.findOneAndUpdate(
-  { username: "admin" },
-  { username: "admin", password, name: "Admin", role: "Super Admin" },
+  { username: adminUsername },
+  { username: adminUsername, password, name: "Admin", role: "Super Admin" },
   { upsert: true, new: true, setDefaultsOnInsert: true }
 );
 
-console.log("Seed complete. Admin login: admin / admin123");
+console.log(`Seed complete. Admin username: ${adminUsername}`);
 await mongoose.disconnect();

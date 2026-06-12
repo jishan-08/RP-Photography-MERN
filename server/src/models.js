@@ -16,11 +16,11 @@ export const SiteContent = mongoose.model("SiteContent", new mongoose.Schema({
 export const Inquiry = mongoose.model("Inquiry", new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   phone: { type: String, required: true, trim: true },
-  email: { type: String, trim: true },
+  email: { type: String, trim: true, lowercase: true },
   service: String,
   eventDate: String,
   message: String,
-  status: { type: String, default: "New" }
+  status: { type: String, enum: ["New", "Pending", "Confirmed", "Completed", "Cancelled"], default: "New" }
 }, { timestamps: true }));
 
 export const Booking = mongoose.model("Booking", new mongoose.Schema({
@@ -31,7 +31,7 @@ export const Booking = mongoose.model("Booking", new mongoose.Schema({
   amount: { type: Number, default: 0 },
   paid: { type: Number, default: 0 },
   notes: String,
-  status: { type: String, default: "Confirmed" }
+  status: { type: String, enum: ["Pending", "Confirmed", "Completed", "Cancelled"], default: "Confirmed" }
 }, { timestamps: true }));
 
 export const User = mongoose.model("User", new mongoose.Schema({

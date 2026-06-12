@@ -14,7 +14,8 @@ RP Photography website.
 1. Install Node.js 18+ and MongoDB.
 2. Copy `server/.env.example` to `server/.env`.
 3. Start MongoDB locally, or set `MONGO_URI` to MongoDB Atlas.
-4. Run:
+4. Set a unique `JWT_SECRET` and strong `ADMIN_PASSWORD`.
+5. Run:
 
 ```bash
 npm install
@@ -25,12 +26,10 @@ npm run dev
 
 Open `http://localhost:5173`. Admin is at `http://localhost:5173/admin`.
 
-Default admin:
+The default username is `admin`. The password is read from `ADMIN_PASSWORD`
+when `npm run seed` is executed.
 
-- Username: `admin`
-- Password: `admin123`
-
-Change the password and JWT secret before deployment.
+Never commit `server/.env` or place live credentials in `.env.example`.
 
 ## Production
 
