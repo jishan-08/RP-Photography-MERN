@@ -18,19 +18,19 @@
 .site-nav{position:relative;top:auto;background:#05070b}
 .hero{--hero-inset:clamp(16px,2vw,32px);--hero-rotate-x:0deg;--hero-rotate-y:0deg;--hero-shift-x:0px;--hero-shift-y:0px;--cursor-x:50%;--cursor-y:50%;height:calc(100svh - 108px);min-height:650px;background:#030405;isolation:isolate}
 .hero-media{inset:var(--hero-inset);width:auto;height:auto;z-index:0;perspective:1200px;overflow:hidden;pointer-events:none;border:1px solid rgba(199,163,90,.14)}
-.hero-camera-stage{position:absolute;inset:-5%;transform-style:preserve-3d;transform:translate3d(var(--hero-shift-x),var(--hero-shift-y),0) rotateX(var(--hero-rotate-x)) rotateY(var(--hero-rotate-y)) scale(1.07);transition:transform .16s cubic-bezier(.2,.75,.25,1);will-change:transform}
-.hero-media .hero-camera{position:relative;inset:auto;left:auto;width:100%;height:100%;min-width:0;object-fit:cover;object-position:center;opacity:1;filter:contrast(1.08) brightness(.86);transform:translateZ(35px) scale(1.025);transition:none}
+.hero-camera-stage{position:absolute;inset:0;transform-style:preserve-3d;transform:translate3d(var(--hero-shift-x),var(--hero-shift-y),0) rotateX(var(--hero-rotate-x)) rotateY(var(--hero-rotate-y)) scale(.92);transition:transform .16s cubic-bezier(.2,.75,.25,1);will-change:transform}
+.hero-media .hero-camera{position:relative;inset:auto;left:auto;width:100%;height:100%;min-width:0;object-fit:contain;object-position:center;opacity:1;filter:contrast(1.12) brightness(1.14) saturate(1.06);transform:translateZ(35px);transition:none}
 .hero-camera-glow{position:absolute;left:24%;top:43%;width:24vw;height:24vw;min-width:240px;min-height:240px;border-radius:50%;background:radial-gradient(circle,rgba(199,163,90,.22),rgba(199,163,90,.05) 35%,transparent 68%);mix-blend-mode:screen;transform:translateZ(70px);filter:blur(10px);pointer-events:none}
-.hero-shade{inset:var(--hero-inset);width:auto;height:auto;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(3,5,8,.92) 0%,rgba(3,5,8,.72) 33%,rgba(3,5,8,.2) 68%,rgba(3,5,8,.48)),linear-gradient(0deg,rgba(3,5,8,.82),transparent 48%,rgba(3,5,8,.3))}
+.hero-shade{inset:var(--hero-inset);width:auto;height:auto;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(3,5,8,.86) 0%,rgba(3,5,8,.62) 33%,rgba(3,5,8,.08) 68%,rgba(3,5,8,.2)),linear-gradient(0deg,rgba(3,5,8,.58),transparent 48%,rgba(3,5,8,.12))}
 .hero-copy{position:relative;z-index:3;width:min(740px,calc(100% - (var(--hero-inset) * 2) - 2.5rem));margin-left:calc(var(--hero-inset) + clamp(1.3rem,6vw,6rem));padding-top:0;transform:none;text-shadow:0 3px 30px rgba(0,0,0,.7)}
 .hero-cursor{position:absolute;z-index:5;left:var(--cursor-x);top:var(--cursor-y);width:54px;height:54px;border:1px solid rgba(234,209,155,.82);border-radius:50%;transform:translate(-50%,-50%) scale(.7);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;background:rgba(199,163,90,.04);box-shadow:0 0 28px rgba(199,163,90,.12)}
 .hero-cursor span{position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;background:var(--gold2);transform:translate(-50%,-50%)}
 .hero.is-interacting .hero-cursor{opacity:1;transform:translate(-50%,-50%) scale(1)}
 
 @media (hover:hover) and (pointer:fine){.hero,.hero button,.hero a{cursor:none}.hero:has(button:hover) .hero-cursor,.hero:has(a:hover) .hero-cursor{transform:translate(-50%,-50%) scale(.72);background:rgba(199,163,90,.16)}}
-@media (hover:none),(pointer:coarse){.hero-camera-stage{transform:scale(1.07)}.hero-cursor{display:none}}
-@media (prefers-reduced-motion:reduce){.hero-camera-stage{transform:scale(1.07);transition:none}.hero-cursor{display:none}}
-@media (max-width:780px){.site-nav{top:auto}.hero{--hero-inset:12px;height:calc(100svh - 98px);min-height:620px}.hero-copy{width:calc(100% - (var(--hero-inset) * 2) - 2rem);margin:0 0 0 calc(var(--hero-inset) + 1rem);padding:0}.hero-media .hero-camera{object-position:58% center}}
+@media (hover:none),(pointer:coarse){.hero-camera-stage{transform:scale(.92)}.hero-cursor{display:none}}
+@media (prefers-reduced-motion:reduce){.hero-camera-stage{transform:scale(.92);transition:none}.hero-cursor{display:none}}
+@media (max-width:780px){.site-nav{top:auto}.hero{--hero-inset:12px;height:calc(100svh - 98px);min-height:620px}.hero-copy{width:calc(100% - (var(--hero-inset) * 2) - 2rem);margin:0 0 0 calc(var(--hero-inset) + 1rem);padding:0}.hero-camera-stage{transform:scale(.96)}.hero-media .hero-camera{object-position:58% center}}
 .login-overlay{position:fixed;inset:0;background:rgba(3,6,13,.85);display:grid;place-items:center;padding:1.5rem;z-index:50}
 .login-modal{width:min(460px,100%);background:#08101c;border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.45);border-radius:18px;padding:2rem;position:relative}
 .login-close{position:absolute;top:1rem;right:1rem;background:none;border:0;color:#fff;cursor:pointer}
