@@ -32,9 +32,10 @@
 @media (prefers-reduced-motion:reduce){.hero-camera-stage{transform:scale(1.4);transition:none}.hero-cursor{display:none}}
 @media (max-width:780px){.site-nav{top:auto}.hero{--hero-inset:12px;height:calc(100svh - 98px);min-height:620px}.hero-copy{width:calc(100% - (var(--hero-inset) * 2) - 2rem);margin:0 0 0 calc(var(--hero-inset) + 1rem);padding:0}.hero-camera-stage{inset:3%;transform:scale(.88);transform-origin:center}.hero-media .hero-camera{object-position:center}}
 @media (max-width:520px){
+  .hero-copy{transform:translateY(-24px)}
   .hero h1{max-width:100%;margin:0 0 1rem;font-size:clamp(2.35rem,11vw,2.8rem);line-height:1.08;letter-spacing:-.035em}
   .hero h1 em{display:block;font-style:normal}
-  .hero-camera-stage{inset:-2% -18%;transform:translate(9%,4%) scale(1.32);transform-origin:center}
+  .hero-camera-stage{inset:0 -12%;transform:translate(7%,4%) scale(1.15);transform-origin:center}
   .hero-media .hero-camera{object-position:center 48%}
 }
 .login-overlay{position:fixed;inset:0;background:rgba(3,6,13,.85);display:grid;place-items:center;padding:1.5rem;z-index:50}
