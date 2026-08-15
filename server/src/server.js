@@ -13,6 +13,9 @@ import { createToken, requireAuth } from "./auth.js";
 import { getConfig } from "./config.js";
 import { Booking, Inquiry, SiteContent, Upload, User } from "./models.js";
 import { defaultContent } from "./defaultContent.js";
+import dns from "node:dns";
+
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const config = getConfig();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

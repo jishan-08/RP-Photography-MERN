@@ -1,8 +1,9 @@
-const API_URL = import.meta.env.VITE_API_URL || "";
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
 
 export function assetUrl(value) {
   if (!value || /^(https?:|data:|blob:)/.test(value)) return value;
-  return `${API_URL}${value}`;
+  const path = value.startsWith("/") ? value : `/${value}`;
+  return `${API_URL}${path}`;
 }
 
 export async function api(path, options = {}) {
